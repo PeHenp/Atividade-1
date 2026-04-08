@@ -1,1 +1,41 @@
+ #include <stdio.h>
 
+int main() {
+    int v[3] = {1, 2, 3};
+    int M[3][3] = {
+        {1, 2, 3},
+        {4, 5, 6},
+        {7, 8, 9}
+    };
+    int R[3];
+
+    printf("Vetor:\n");
+    for (int i = 0; i < 3; i++) {
+        printf("%d ", v[i]);
+    }
+    printf("\n\n");
+
+    printf("Matriz 3x3:\n");
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            printf("%d ", M[i][j]);
+        }
+        printf("\n");
+    }
+
+    for (int j = 0; j < 3; j++) {
+        R[j] = 0;
+        for (int i = 0; i < 3; i++) {
+            R[j] += v[i] * M[i][j];
+        }
+    }
+
+    printf("\nVetor resultante:\n");
+    for (int i = 0; i < 3; i++) {
+        printf("%d ", R[i]);
+    }
+
+    printf("\n");
+
+    return 0;
+}
