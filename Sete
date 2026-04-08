@@ -1,1 +1,137 @@
+ #include <stdio.h>
+#include <string.h>
+#include <ctype.h>
 
+#define TAM 5
+#define ANO_MIN 1450
+#define ANO_MAX 2026
+
+typedef struct {
+    char titulo[31];
+    char autor[16];
+    int ano;
+} Livro;
+
+int apenasLetras(const char *str) {
+    int i;
+    for (i = 0; str[i] != '\0'; i++) {
+        if (!isalpha(str[i]) && str[i] != ' ') {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+int lerAnoValido() {
+    char buffer[50];
+    int valor;
+
+    while (1) {
+        fgets(buffer, 50, stdin);
+
+        if (sscanf(buffer, "%d", &valor) == 1) {
+            if (valor >= ANO_MIN && valor <= ANO_MAX) {
+                return valor;
+            } else {
+                printf("Ano fora do intervalo (%d - %d). Tente novamente: ", ANO_MIN, ANO_MAX);
+            }
+        } else {
+            printf("Entrada invalida. Digite um numero: ");
+        }
+    }
+}
+
+int comparaIgnorandoCase(const char *a, const char *b) {
+    int i = 0;
+
+    while (a[i] != '\0' && b[i] != '\0') {
+        if (tolower(a[i]) != tolower(b[i])) {
+            return 0;
+        }
+        i++;
+    }
+
+    return a[i] == '\0' && b[i] == '\0';
+}
+
+void exibirLivro(Livro l) {
+    printf("\nTitulo: %s\n", l.titulo);
+    printf("Autor: %s\n", l.autor);
+    printf("Ano: %d\n", l.ano);
+}
+
+int main() {
+    Livro livros[TAM];
+    char busca[31];
+    int i, opcao, encontrou = 0;
+    int total = 4;
+
+    strcpy(livros[0].titulo, "A Vida Nao Faz Sentido");
+    strcpy(livros[0].autor, "Felipe Neto");
+    livros[0].ano = 2017;
+
+    strcpy(livros[1].titulo, "Mais que 5cinco Minutos");
+    strcpy(livros[1].autor, "Kefera Buchmann");
+    livros[1].ano = 2016;
+
+    strcpy(livros[2].titulo, "Dois Mundos Um Heroi");
+    strcpy(livros[2].autor, "RezendeEvil");
+    livros[2].ano = 2015;
+
+    strcpy(livros[3].titulo, "Tudo Tem Uma Primeira Vez");
+    strcpy(livros[3].autor, "Vitoria Tubo");
+    livros[3].ano = 2017;
+
+    printf("LIVROS CADASTRADOS\n");
+    for (i = 0; i < total; i++) {
+        exibirLivro(livros[i]);
+    }
+
+    printf("\nDeseja adicionar um novo livro? (1 - Sim / 0 - Nao): ");
+    scanf("%d", &opcao);
+    getchar();
+
+    if (opcao == 1) {
+        if (total < TAM) {
+            printf("\nCadastro do novo livro:\n");
+
+            printf("Titulo: ");
+            fgets(livros[total].titulo, 31, stdin);
+            livros[total].titulo[strcspn(livros[total].titulo, "\n")] = '\0';
+
+            do {
+                printf("Autor (apenas letras): ");
+                fgets(livros[total].autor, 16, stdin);
+                livros[total].autor[strcspn(livros[total].autor, "\n")] = '\0';
+
+                if (!apenasLetras(livros[total].autor)) {
+                    printf("Autor invalido.\n");
+                }
+            } while (!apenasLetras(livros[total].autor));
+
+            printf("Ano (%d - %d): ", ANO_MIN, ANO_MAX);
+            livros[total].ano = lerAnoValido();
+
+            total++;
+        }
+    }
+
+    printf("\nDigite o titulo do livro que deseja buscar: ");
+    fgets(busca, 31, stdin);
+    busca[strcspn(busca, "\n")] = '\0';
+
+    printf("\nResultados encontrados:\n");
+
+    for (i = 0; i < total; i++) {
+        if (comparaIgnorandoCase(livros[i].titulo, busca)) {
+            exibirLivro(livros[i]);
+            encontrou = 1;
+        }
+    }
+
+    if (!encontrou) {
+        printf("Nenhum livro encontrado.\n");
+    }
+
+    return 0;
+}
