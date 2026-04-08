@@ -1,1 +1,77 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
+#define TAM_NOME 100
+
+typedef struct {
+    char nome[TAM_NOME];
+    float nota;
+} Aluno;
+
+Aluno* maiorNota(Aluno *alunos, int n) {
+    if (alunos == NULL || n <= 0) return NULL;
+
+    Aluno *maior = &alunos[0];
+
+    for (int i = 1; i < n; i++) {
+        if (alunos[i].nota > maior->nota) {
+            maior = &alunos[i];
+        }
+    }
+
+    return maior;
+}
+
+int main() {
+    int n = 3;
+
+    Aluno *alunos = malloc(n * sizeof(Aluno));
+    if (alunos == NULL) {
+        printf("Erro ao alocar memoria.\n");
+        return 1;
+    }
+
+    strcpy(alunos[0].nome, "Ana");
+    strcpy(alunos[1].nome, "Bruno");
+    strcpy(alunos[2].nome, "James");
+
+
+    alunos[0].nota = 8.5f;
+    alunos[1].nota = 9.2f;
+
+  
+    float nota;
+    do {
+        printf("Defina a nota do aluno James: ");
+
+        if (scanf("%f", &nota) != 1) {
+            printf("Entrada invalida.\n");
+            while (getchar() != '\n'); // limpa buffer
+            nota = -1.0f; // força repetição
+            continue;
+        }
+
+        if (nota < 1.0f || nota > 10.0f) {
+            printf("Nota invalida. Digite um valor entre 1 e 10.\n");
+        }
+
+    } while (nota < 1.0f || nota > 10.0f);
+
+    alunos[2].nota = nota;
+
+    printf("\nLista de alunos:\n");
+    for (int i = 0; i < n; i++) {
+        printf("%s %.2f\n", alunos[i].nome, alunos[i].nota);
+    }
+
+    Aluno *melhor = maiorNota(alunos, n);
+
+    if (melhor != NULL) {
+        printf("\nMaior nota:\n");
+        printf("%s %.2f\n", melhor->nome, melhor->nota);
+    }
+
+    free(alunos);
+    return 0;
+}
