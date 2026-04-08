@@ -1,1 +1,76 @@
+#include <stdio.h>
+#include <string.h>
 
+#define MAX 3
+#define TAM 50
+
+typedef struct {
+    char itens[MAX][TAM];
+    int topo;
+} Pilha;
+
+void inicializar(Pilha *p) {
+    p->topo = -1;
+}
+
+int cheia(Pilha *p) {
+    return p->topo == MAX - 1;
+}
+
+int vazia(Pilha *p) {
+    return p->topo == -1;
+}
+
+/* Retorna 1 se inseriu com sucesso, 0 se falhou */
+int push(Pilha *p, const char palavra[]) {
+    if (cheia(p)) {
+        return 0;
+    }
+
+    p->topo++;
+    strncpy(p->itens[p->topo], palavra, TAM - 1);
+    p->itens[p->topo][TAM - 1] = '\0'; // garante terminação segura
+
+    return 1;
+}
+
+/* Retorna 1 se removeu com sucesso, 0 se falhou */
+int pop(Pilha *p, char palavra[]) {
+    if (vazia(p)) {
+        return 0;
+    }
+
+    strcpy(palavra, p->itens[p->topo]);
+    p->topo--;
+
+    return 1;
+}
+
+int main() {
+    Pilha p;
+    char palavra[TAM];
+
+    inicializar(&p);
+
+    printf("Digite tres palavras:\n");
+
+    for (int i = 0; i < MAX; i++) {
+        scanf("%49s", palavra);
+
+        if (!push(&p, palavra)) {
+            printf("Erro: pilha cheia. Palavra nao inserida.\n");
+        }
+    }
+
+    printf("Ordem inversa:\n");
+
+    while (!vazia(&p)) {
+        if (pop(&p, palavra)) {
+            printf("%s ", palavra);
+        }
+    }
+
+    printf("\n");
+
+    return 0;
+}
