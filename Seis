@@ -1,1 +1,54 @@
+#include <stdio.h>
 
+#define MAX 10
+
+typedef struct {
+    char nome[50];
+    int matricula;
+    float media;
+} Aluno;
+
+int main() {
+    Aluno alunos[MAX] = {
+        {"Paulo", 1, 6.5},
+        {"Edmilson", 2, 4.0},
+        {"Alexandre S.", 3, 7.0},
+        {"Alexandre F.", 4, 5.5},
+        {"Jailson", 5, 10.0},
+        {"James", 6, 3.5},
+        {"Douglas", 7, 8.0},
+        {"Carlos", 8, 2.5},
+        {"Renan", 9, 6.0},
+        {"Clovis", 10, 4.5}
+    };
+
+    Aluno aprovados[MAX], reprovados[MAX];
+    int i, qtdAprovados = 0, qtdReprovados = 0;
+
+    // Separando aprovados e reprovados
+    for (i = 0; i < MAX; i++) {
+        if (alunos[i].media >= 5.0) {
+            aprovados[qtdAprovados++] = alunos[i];
+        } else {
+            reprovados[qtdReprovados++] = alunos[i];
+        }
+    }
+
+    printf("\n=== APROVADOS ===\n");
+    for (i = 0; i < qtdAprovados; i++) {
+        printf("Nome: %s | Matricula: %d | Media: %.2f\n",
+               aprovados[i].nome,
+               aprovados[i].matricula,
+               aprovados[i].media);
+    }
+
+    printf("\n=== REPROVADOS ===\n");
+    for (i = 0; i < qtdReprovados; i++) {
+        printf("Nome: %s | Matricula: %d | Media: %.2f\n",
+               reprovados[i].nome,
+               reprovados[i].matricula,
+               reprovados[i].media);
+    }
+
+    return 0;
+}
