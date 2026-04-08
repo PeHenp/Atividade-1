@@ -1,1 +1,39 @@
+#include <stdio.h>
 
+int main() {
+    int A[3][3], I[3][3];
+
+    printf("Digite os elementos da matriz 3x3:\n");
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            scanf("%d", &A[i][j]);
+        }
+    }
+
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            if (i == j)
+                I[i][j] = 1;
+            else
+                I[i][j] = 0;
+        }
+    }
+
+    printf("\nMatriz identidade:\n");
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            printf("%d ", I[i][j]);
+        }
+        printf("\n");
+    }
+
+    printf("\nResultado da multiplicacao A * I:\n");
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            printf("%d ", A[i][j]);
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
